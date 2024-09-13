@@ -121,18 +121,7 @@ async def start_command(client: Client, message: Message):
                     snt_msgs.append(snt_msg)
                 except:
                     pass
-
-            print("Starting Delete Process")
-            get = f"https://t.me/{client.username}?start={message.command[1]}"
-            await message.reply_text(f"Files will be deleted in 10 minutes.\nForward to saved messages before downloading\n[ClickHere]({get}) to get it again", parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
-            await asyncio.sleep(SECONDS)
-
-            for snt_msg in snt_msgs:
-                try:
-                    await snt_msg.delete()
-                except:
-                    pass
-            return
+
 
         elif string.startswith("get"):
             if not is_premium:
