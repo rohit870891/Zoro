@@ -19,7 +19,7 @@ from helper_func import subscribed, encode, decode, get_messages, get_shortlink,
 from database.database import *
 from database.db_premium import *
 
-SECONDS = int(os.getenv("SECONDS", "600")) #5_minutes
+SECONDS = int(os.getenv("SECONDS", "0")) #5_minutes
 
 # Enable logging
 logging.basicConfig(level=logging.INFO)
