@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 
 #Bot token @Botfather
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7401282886:AAEze7prNvq4foYredaqgw3EwpiKUmwhNNI")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7223199796:AAFx1K6eRv5uTvcMcD11BSQssRgYdB5w_zk")
 
 #Your API ID from my.telegram.org
 APP_ID = int(os.environ.get("APP_ID", "25839862"))
@@ -32,7 +32,7 @@ SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "Modijiurl.com")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "beb3b795a226177f3af7c937a2f01d5d7d4f4cf0")
 VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 86400)) # Add time in seconds
 IS_VERIFY = os.environ.get("IS_VERIFY", "True")
-TUT_VID = os.environ.get("TUT_VID", "https://t.me/+ddddd")
+TUT_VID = os.environ.get("TUT_VID", "https://t.me/+")
 
 #force sub channel id, if you want enable force sub
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002215102799"))
