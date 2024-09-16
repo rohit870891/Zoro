@@ -102,9 +102,12 @@ async def start_command(client: Client, message: Message):
             snt_msgs = []
             for msg in messages:
                 if bool(CUSTOM_CAPTION) & bool(msg.document):
-                    caption = CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, filename=msg.document.file_name)
+
+                  original_caption = msg.caption.html if msg.caption else ""
+                if CUSTOM_CAPTION:
+                    caption = f"{original_caption}\n\n{CUSTOM_CAPTION}"
                 else:
-                    caption = "" if not msg.caption else msg.caption.html
+                    caption = original_caption  
 
                 if DISABLE_CHANNEL_BUTTON:
                     reply_markup = msg.reply_markup
