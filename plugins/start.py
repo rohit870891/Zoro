@@ -314,6 +314,3 @@ async def list_premium_users_command(client, message):
         await message.reply_text("\n\n".join(formatted_list))
     else:
         await message.reply_text("I found 0 premium users in my DB")
-
-
-
