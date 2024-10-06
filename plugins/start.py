@@ -51,7 +51,7 @@ async def start_command(client: Client, message: Message):
     current_time = time.time()
 
     if base64_string:
-        string = await decode(base64_string)
+        decoded_string = await decode(base64_string)
 
         if "verify_" in text:
             _, token = text.split("_", 1)
@@ -65,19 +65,13 @@ async def start_command(client: Client, message: Message):
             await update_verify_status(id, is_verified=True, verified_time=current_time)
             await message.reply("Your token successfully verified and valid for: 24 Hours", reply_markup=None, protect_content=False, quote=True)
 
-        elif string.startswith("premium"):
+        elif decoded_string.startswith("premium"):
             if not is_premium:
                 await message.reply("Buy premium to access this content\nTo Buy Contact @rohit_1888")
                 return
 
             # Handle premium logic
-            try:
-                base64_string = text.split(" ", 1)[1]
-            except:
-                return
-
-            string = await decode(base64_string)
-            argument = string.split("-")
+            argument = decoded_string.split("-")
             if len(argument) == 3:
                 try:
                     start = int(int(argument[1]) / abs(client.db_channel.id))
@@ -146,13 +140,7 @@ async def start_command(client: Client, message: Message):
                     await message.reply(f"Your Ads token is expired or invalid. Please verify to access the files.\n\nToken Timeout: {get_exp_time(VERIFY_EXPIRE)}\n\nWhat is the token?\n\nThis is an ads token. If you pass 1 ad, you can use the bot for 24 Hours after passing the ad.", reply_markup=InlineKeyboardMarkup(btn), protect_content=False, quote=True)
                     return
 
-            try:
-                base64_string = text.split(" ", 1)[1]
-            except:
-                return
-
-            string = await decode(base64_string)
-            argument = string.split("-")
+            argument = decoded_string.split("-")
             if len(argument) == 3:
                 try:
                     start = int(int(argument[1]) / abs(client.db_channel.id))
@@ -186,11 +174,9 @@ async def start_command(client: Client, message: Message):
             snt_msgs = []
             for msg in messages:
                 if bool(CUSTOM_CAPTION) & bool(msg.document):
-                    original_caption = msg.caption.html if msg.caption else ""
-                    if CUSTOM_CAPTION:
-                        caption = f"{original_caption}\n\n{CUSTOM_CAPTION}"
-                    else:
-                        caption = original_caption
+                    caption = CUSTOM_CAPTION.format(previouscaption="" if not msg.caption else msg.caption.html, filename=msg.document.file_name)
+                else:
+                    caption = "" if not msg.caption else msg.caption.html
 
                 if DISABLE_CHANNEL_BUTTON:
                     reply_markup = msg.reply_markup
@@ -208,7 +194,8 @@ async def start_command(client: Client, message: Message):
                 except:
                     pass
 
-            return
+            return protect_content=PROTECT_CONTENT)
+                    
     else:
         try:
             reply_markup = InlineKeyboardMarkup(
