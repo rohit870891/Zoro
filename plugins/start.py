@@ -69,12 +69,13 @@ async def start_command(client: Client, message: Message):
             if not is_premium:
                 await message.reply("Buy premium to access this content\nTo Buy Contact @rohit_1888")
                 return
-            
+
             # Handle premium logic
             try:
                 base64_string = text.split(" ", 1)[1]
             except:
                 return
+
             string = await decode(base64_string)
             argument = string.split("-")
             if len(argument) == 3:
@@ -98,22 +99,23 @@ async def start_command(client: Client, message: Message):
                     ids = [int(int(argument[1]) / abs(client.db_channel.id))]
                 except:
                     return
+
             temp_msg = await message.reply("Please wait...")
             try:
                 messages = await get_messages(client, ids)
             except:
-                await message.reply_text("Something went wrong..!") 
+                await message.reply_text("Something went wrong..!")
                 return
+
             await temp_msg.delete()
             snt_msgs = []
             for msg in messages:
                 if bool(CUSTOM_CAPTION) & bool(msg.document):
-
-                  original_caption = msg.caption.html if msg.caption else ""
-                if CUSTOM_CAPTION:
-                    caption = f"{original_caption}\n\n{CUSTOM_CAPTION}"
-                else:
-                    caption = original_caption  
+                    original_caption = msg.caption.html if msg.caption else ""
+                    if CUSTOM_CAPTION:
+                        caption = f"{original_caption}\n\n{CUSTOM_CAPTION}"
+                    else:
+                        caption = original_caption
 
                 if DISABLE_CHANNEL_BUTTON:
                     reply_markup = msg.reply_markup
@@ -131,12 +133,10 @@ async def start_command(client: Client, message: Message):
                 except:
                     pass
 
-
-
         elif string.startswith("get"):
             if not is_premium:
                 if not verify_status['is_verified']:
-                    token = ''.join(random.choices(piroayush.ascii_letters + piroayush.digits, k=10))
+                    token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                     await update_verify_status(id, verify_token=token, link="", is_verified=False, verified_time=0)
                     link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
                     btn = [
@@ -150,6 +150,7 @@ async def start_command(client: Client, message: Message):
                 base64_string = text.split(" ", 1)[1]
             except:
                 return
+
             string = await decode(base64_string)
             argument = string.split("-")
             if len(argument) == 3:
@@ -173,12 +174,14 @@ async def start_command(client: Client, message: Message):
                     ids = [int(int(argument[1]) / abs(client.db_channel.id))]
                 except:
                     return
+
             temp_msg = await message.reply("Please wait...")
             try:
                 messages = await get_messages(client, ids)
             except:
-                await message.reply_text("Something went wrong..!") 
+                await message.reply_text("Something went wrong..!")
                 return
+
             await temp_msg.delete()
             snt_msgs = []
             for msg in messages:
