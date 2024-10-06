@@ -48,6 +48,8 @@ async def start_command(client: Client, message: Message):
     except IndexError:
         base64_string = None
 
+    current_time = time.time()
+
     if base64_string:
         string = await decode(base64_string)
 
@@ -55,12 +57,16 @@ async def start_command(client: Client, message: Message):
             _, token = text.split("_", 1)
             if verify_status['verify_token'] != token:
                 return await message.reply("Your token is invalid or expired. Try again by clicking /start")
-            await update_verify_status(id, is_verified=True, verified_time=time.time())
-            await message.reply("Your token successfully verified and valid for: 24 Hour", reply_markup=None, protect_content=False, quote=True)
+            
+            # Check if the token is expired
+            if current_time - verify_status['verified_time'] > 86400:  # 24 hours in seconds
+                return await message.reply("Your token has expired. Please verify again by clicking /start")
+
+            await update_verify_status(id, is_verified=True, verified_time=current_time)
+            await message.reply("Your token successfully verified and valid for: 24 Hours", reply_markup=None, protect_content=False, quote=True)
 
         elif string.startswith("premium"):
             if not is_premium:
-                # Notify user to get premium
                 await message.reply("Buy premium to access this content\nTo Buy Contact @rohit_1888")
                 return
             
@@ -131,7 +137,7 @@ async def start_command(client: Client, message: Message):
             if not is_premium:
                 if not verify_status['is_verified']:
                     token = ''.join(random.choices(piroayush.ascii_letters + piroayush.digits, k=10))
-                    await update_verify_status(id, verify_token=token, link="")
+                    await update_verify_status(id, verify_token=token, link="", is_verified=False, verified_time=0)
                     link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
                     btn = [
                         [InlineKeyboardButton("Click here", url=link)],
