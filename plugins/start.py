@@ -194,7 +194,7 @@ async def start_command(client: Client, message: Message):
                 except:
                     pass
 
-            return protect_content=PROTECT_CONTENT)
+            return 
                     
     else:
         try:
